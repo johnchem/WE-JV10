@@ -1,0 +1,41 @@
+personnage
+	- maxJump : int
+	- jumpDone : int
+	- pos : (int,int)
+	- size : (int, int)
+	- hitBox: (int, int, int, int)
+	- health : int
+	- tiredness : int
+	- availableJump() : int
+	- maxLenghtJump() : int
+	- frightImpact()
+	- onGround : boolean
+
+genMap
+	- startPos : (int, int)
+	- endPos : (int, int)
+	- DictHurdles : {hurdle}
+	- DictPad = {pad}
+
+hurdle
+	- pos : (int, int)
+	- size : (int, int)
+	- hitBox: (int, int, int, int)
+	- kind : string
+	- damage : int
+	- texture : png
+
+pad
+	- pos : (int, int)
+	- size : (int, int)
+	- hitBox: (int, int, int, int)
+	- texture : png
+
+jeu
+	- moveChar()
+	- IsCharOnGround()
+	- score : int
+	- timer : int
+	- is
+
+

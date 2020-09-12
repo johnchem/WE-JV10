@@ -31,16 +31,25 @@ pad
 	- hitBox: (int, int, int, int)
 	- texture : png
 
-display
-	- run()
-	- init() : {object}
-	- displayChar()
-	- displayMap()
+element:
+	- pos : (int, int)
+	- size : (int, int)
+	- value : int
+	- texture : png
 
-main
-	- moveChar()
-	- IsCharOnGround()
+display
 	- score : int
 	- timer : int
+	- background : (int, int, int)
+	- run()
+	- init() : {object}
+	- displayChar : {object}
+	- displayMap : {object}
+	- displayHud : {object}
+	- moveChar()
+	- IsCharOnGround()
+	
+
+
 
 

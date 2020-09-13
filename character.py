@@ -13,7 +13,7 @@ class Character():
 	'''
 
 	'''
-	def __init__(self, x, y ,height, width, window):
+	def __init__(self, x, y , width, height, window):
 		#position variable
 		self.x, self.y = x, y
 		self.dx, self.dy = 0, 0
@@ -36,6 +36,8 @@ class Character():
 		
 	def draw(self):
 		pygame.draw.rect(self.window, self.color, self.rect,0)
+		pygame.draw.line(self.window, (0,0,0), (self.rect.left, self.rect.top), 
+						(self.rect.right, self.rect.top), 2)
 
 	def touchGround(self):
 		self.onGround = True
@@ -63,6 +65,7 @@ class Character():
 				self.onGround = False
 				self.jumpHeight = self.tired(up, timer)
 				self.currentJump = self.jumpHeight
+				if self.jumps == 0: print("no more jumps")
 		else:
 			if self.currentJump < 0: #speed to the top
 				self.dy = -(self.currentJump)**2 + self.gravity
@@ -79,7 +82,11 @@ class Character():
 	def tired(self, jumpHeight, timer):
 		if timer != None:
 			print(timer)
-			jumpHeight *= (timer/180)**3
+			if timer < 180: 
+				factor= timer/180
+			else: 
+				factor=1 
+			jumpHeight*=factor
 		return jumpHeight
 
 	def fear(self, distance):
@@ -93,19 +100,33 @@ class Character():
 def collisionDetection(char, listObj):
 	for obj in listObj:
 		if char.rect.colliderect(obj.rect):
+			print(f" {char.rect.x}, {char.rect.y}")
+			#hit from the object point of view
+			hitLeft = char.rect.right > obj.rect.left # Moving right
+			hitRight = char.rect.left < obj.rect.right # Moving left
+			hitTop = char.rect.bottom > obj.rect.top # Moving down
+			hitBottom = char.rect.top < obj.rect.bottom # Moving up
 
-			if char.rect.right > obj.rect.left: # Moving right; Hit the left side
+			print(f"{hitLeft} {hitRight} {hitTop} {hitBottom}")
+			#from the object point of view
+			if hitRight and (hitTop or hitBottom): # hit by the right side
+				print("hit left")
 				char.rect.right = obj.rect.left
 
-			if char.rect.left < obj.rect.right: # Moving left; Hit the right side
-				char.rect.left = obj.rect.left
+			if hitLeft and (hitTop or hitBottom): # hit by the left side
+				print("hit right")
+				char.rect.left = obj.rect.right
 
-			if char.rect.bottom > obj.rect.top: # Moving down; Hit the top side
+			if hitTop and (hitRight, hitLeft): # land on the top side
+				print("hit top")
 				char.touchGround()
 				char.rect.bottom = obj.rect.top
-			
-			if char.rect.top < obj.rect.bottom: # Moving up; Hit the bottom side
+
+			if hitBottom and (hitRight or hitLeft): # Moving up; Hit the bottom side
+				print("hit bottom")
 				char.rect.top = obj.rect.bottom
+
+			print(f" {char.rect.x}, {char.rect.y}")
 
 
 def collisionBorder(char, border):
@@ -141,9 +162,9 @@ if __name__ == '__main__':
 	clock = pygame.time.Clock()
 	font = pygame.font.SysFont("Comic Sans Ms", 20)
 
-	char = Character(200,200,50,25,win)
-	bloc = pad(100, 300, 30, 300, win)
-	spike = hurdle(100, 370, 30, 30, (255,0,0), win)
+	char = Character(200,200,25,50,win)
+	bloc = pad(100, 300, 300, 30, win)
+	spike = hurdle(370, 270, 30, 30, (255,0,0), win)
 	ListDisplay = [spike, bloc, char]
 
 	run = True

@@ -12,6 +12,7 @@ import random
 from pygame.locals import *
 from element import *
 from character import *
+from assets import *
 import levels
 
 BLACK = (0,0,0)
@@ -23,6 +24,12 @@ LIGHTRED = (255,77,77)
 LIGHTGREEN = (77,255,77)
 LIGHTBLUE = (77,77,255)
 
+def init_game_asset():
+	char = {}
+	pad = {}
+	hurdles = {}
+	#image = pygame.transform.scale(image, (16, 16))
+		
 class Display():
 	''' 
 		initialize of the display
@@ -35,6 +42,7 @@ class Display():
 		self.window = window
 		self.character = None
 		self.elements = []
+		self.hud = []
 	
 	def initElement(self):
 		for x, y, w, h in levels.pads:
@@ -42,6 +50,14 @@ class Display():
 
 		for x ,y in levels.hurdles:
 			self.elements.append(hurdle(x ,y, 30, 30, (255,0,0), self.window))
+
+	def initHud(self):
+		faceDisplay = pygame.rect()
+		gaugeTiredNess = pygame.rect()
+		gaugeBravery = pygame.rect()
+		textJump = pygame.rect()
+		textScore = pygame.rect()
+		testTimer = pygame.rect()
 
 	def _refresh(self):
 		''' refresh the screen by drawing all the items'''
@@ -56,7 +72,7 @@ class Display():
 	def run(self):
 		''' main loop who handle user event'''
 
-		self.character = Character(200,200,25,50,win)
+		self.character = Character(200,200,16,36,win)
 		self.initElement()
 
 		run = True

@@ -2,7 +2,7 @@
 
 import pygame
 
-if name == "__main__":
+if __name__ == "__main__":
 	pygame.init()
 	win = pygame.display.set_mode((1350,700))
 	pygame.display.set_caption("10Jumps")

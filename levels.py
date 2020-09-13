@@ -1,7 +1,7 @@
 
 
-from random import randrange, randint
-
+from random import randrange, randint, choices
+'''
 pads = ((1100, 405, 161, 30), 
 		(1192, 161, 138, 30), 
 		(370, 372, 175, 30), 
@@ -12,8 +12,20 @@ pads = ((1100, 405, 161, 30),
 		(826, 664, 115, 30), 
 		(802, 648, 174, 30), 
 		(256, 177, 149, 30))
+'''
 
-hurdles = ((1110, 375),(590, 436),(300, 147),(200, 177),(410,342))
+pads = ((818, 578, 292, 16), 
+		(1106, 482, 148, 16), 
+		(386, 562, 244, 16), 
+		(754, 578, 148, 16), 
+		(466, 226, 244, 16), 
+		(738, 50, 228, 16), 
+		(578, 674, 260, 16), 
+		(322, 178, 212, 16), 
+		(434, 578, 100, 16), 
+		(882, 498, 196, 16))
+
+hurdles = ((1106, 482-32),(466, 226-32),(322, 178-32),(882, 498-32),(818, 578-32))
 
 def autoGenPads(nb, screenSize):
 	listPad = []
@@ -47,10 +59,10 @@ def genPad(screenSize):
 
 if __name__ == '__main__':
 	screenSize = (1350,700)
-	padPosX = choices(range(0,1350,1), k=10)
-	padPosY = choices(range(0,700,1), k=10)
-	padWidth = choices(range(0,300,1), k=10)
-	padHeight = [30 for x in range(0,10)]
+	padPosX = choices(range(50,1350,16), k=10)
+	padPosY = choices(range(50,700,16), k=10)
+	padWidth = choices(range(100,300,16), k=10)
+	padHeight = [16 for x in range(0,10)]
 	print(f"{padPosX}, {padPosY}, {padWidth}, {padHeight}")
 	pad = zip(padPosX, padPosY, padWidth, padHeight)
 	print(tuple(pad))

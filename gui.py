@@ -24,12 +24,7 @@ LIGHTRED = (255,77,77)
 LIGHTGREEN = (77,255,77)
 LIGHTBLUE = (77,77,255)
 
-def init_game_asset():
-	char = {}
-	pad = {}
-	hurdles = {}
-	#image = pygame.transform.scale(image, (16, 16))
-		
+	
 class Display():
 	''' 
 		initialize of the display
@@ -37,21 +32,46 @@ class Display():
 		handle the user events and refresh the screen
 	'''
 
-	def __init__(self, window):
+	def __init__(self, window, spriteFileName):
 		self.background = WHITE
 		self.window = window
 		self.character = None
 		self.elements = []
 		self.hud = []
+
+		#graphical element
+		self.spriteSheet = None
+		self.char_images = []
+		self.pad_images = []
+		self.hurdles_images = []
+		self._initImage(spriteFileName)
+
+	def _initImage(self, spriteFileName):
+		char = {}
+		pad = {"left_side":((41,64),(1,1)),
+			"middle_side":((42,64),(1,1)),
+			"right_side":((44,64),(1,1))}
+		hurdles = {}
+
+		self.spriteSheet = SpriteSheet(spriteFileName)
+		for key, value in pad.items():
+			self.pad_images.append(self.spriteSheet.get_image(value[0], value[1]))
 	
-	def initElement(self):
+	def _initCharacter(self,x,y,width,height):
+		self.character = Character(x,y,width,height,self.window)
+
+	def _initElement(self):
 		for x, y, w, h in levels.pads:
-			self.elements.append(pad(x,y,w,h,self.window))
+			self.elements.append(pad(x,y,w,h,
+								 self.pad_images[2],
+								 self.pad_images[0],
+								 self.pad_images[1], 
+								 self.window))
 
 		for x ,y in levels.hurdles:
-			self.elements.append(hurdle(x ,y, 30, 30, (255,0,0), self.window))
+			self.elements.append(hurdle(x ,y, 30, 30, (255,0,0), None, self.window))
 
-	def initHud(self):
+	def _initHud(self):
 		faceDisplay = pygame.rect()
 		gaugeTiredNess = pygame.rect()
 		gaugeBravery = pygame.rect()
@@ -69,11 +89,14 @@ class Display():
 		self.character.draw()
 		pygame.display.update()
 
+
 	def run(self):
 		''' main loop who handle user event'''
+		clock = pygame.time.Clock()
+		font = pygame.font.SysFont("Comic Sans Ms", 20)
 
-		self.character = Character(200,200,16,36,win)
-		self.initElement()
+		self._initCharacter(200,200,16,36)
+		self._initElement()
 
 		run = True
 		nbCycle = 0
@@ -101,9 +124,9 @@ class Display():
 			if not keyPressed:
 				self.character.move()
 
-			win.fill(self.background)
+			self.window.fill(self.background)
 
-			collisionBorder(self.character, win)
+			collisionBorder(self.character, self.window)
 			collisionDetection(self.character, self.elements)
 			#proximityDetection(self.character, [spike])
 			
@@ -121,6 +144,7 @@ if __name__ == "__main__":
 	pygame.display.set_caption("test display")
 	clock = pygame.time.Clock()
 	font = pygame.font.SysFont("Comic Sans Ms", 20)
+	filename = 'game_assets/monsterboy_assets.png'
 
-	display = Display(win)
+	display = Display(win, filename)
 	display.run()

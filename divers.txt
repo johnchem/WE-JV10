@@ -21,5 +21,11 @@ while True :
     # copying the text surface object 
     # to the display surface object  
     # at the center coordinate. 
-    display_surface.blit(text, textRect) 
+    display_surface.blit(text, textRect)
+
+#lien wetransfert build 22h34
+https://we.tl/t-eUpH42OCFv
+
+
+ 
   

@@ -15,8 +15,10 @@ class element():
 		self.image = None
 
 	def draw(self):
-		#pygame.draw.rect(self.window, self.color, self.rect,0)
-		self.window.blit(self.image, self.rect)	
+		if self.image:
+			self.window.blit(self.image, self.rect)	
+		else:
+			pygame.draw.rect(self.window, self.color, self.rect,0)
 		pygame.draw.line(self.window, (0,0,0), (self.rect.left, self.rect.top), 
 						(self.rect.right, self.rect.top), 2)
 		
@@ -25,16 +27,32 @@ class hurdle(element):
 		object which are frightful to the character
 	'''
 	def __init__(self,x,y,width,height,color,image,window):
-		super().__init__(x, y , width, height, color, window)
+		super().__init__(x,y,width,height,color,image,window)
 
 
 class pad(element):
 	'''
 		plateform class
 	'''
-	def __init__(self,x,y,width,height,image,window):
+	def __init__(self,x,y,width,height,right_side_image,left_side_image,middle_image,window):
+		self.x, self.y = x, y
+		self.height, self.width = height, width
+		self.window = window
+		self.rect = pygame.Rect(x, y, width, height)
 		self.color = (77, 255, 77)
-		super().__init__(x, y ,width, height, self.color, window)
+		self.r_Image = right_side_image
+		self.l_Image = left_side_image
+		self.m_image = middle_image
+
+	def draw(self):
+		nbBloc = int(self.width/16)
+		for x in range(0, nbBloc):
+			if x == 0 : 
+				self.window.blit(self.l_Image, (self.x, self.y))
+			elif x == nbBloc-1:
+				self.window.blit(self.r_Image, (self.x+16*x, self.y))
+			else:
+				self.window.blit(self.m_image, (self.x+16*x, self.y))
 
 class textBox():
 	'''
@@ -45,11 +63,12 @@ class textBox():
 		self.color = color
 		self.label = label
 
-	def update(self, text, color=self.color):
+	def update(self, text, color):
 		text = font.render('GeeksForGeeks', True, green, blue) 
 
 	def draw(self):
 		display_surface.blit(text, textRect)
+
 
 class TextBox(pygame.sprite.Sprite):
 		def __init__(self):

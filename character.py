@@ -33,6 +33,8 @@ class Character():
 		self.currentJump = 0
 		self.onGround = True
 		self.color = (77,77,255)
+		#assets
+		self.image = None
 		
 	def draw(self):
 		pygame.draw.rect(self.window, self.color, self.rect,0)

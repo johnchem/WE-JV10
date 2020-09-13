@@ -17,7 +17,7 @@ class SpriteSheet:
 	def __init__(self, filename):
 		"""Load the sheet."""
 		try:
-			self.sheet = pygame.image.load(filename).convert()
+			self.sheet = pygame.image.load(filename).convert_alpha()
 		except pygame.error as e:
 			print(f"Unable to load spritesheet image: {filename}")
 			raise SystemExit(e)
@@ -27,7 +27,7 @@ class SpriteSheet:
 		"""Load a specific image from a specific rectangle."""
 		# Loads image from x, y, x+offset, y+offset.
 		rect = pygame.Rect(rectangle)
-		image = pygame.Surface(rect.size).convert()
+		image = pygame.Surface(rect.size).convert_alpha()
 		image.blit(self.sheet, (0, 0), rect)
 		if colorkey is not None:
 			if colorkey == -1:
@@ -70,11 +70,22 @@ if __name__ == "__main__":
 		clock.tick(60)
 		win.fill((255,255,255))
 
-		image = element_ss.get_image((61,24),(2,2))
-		image = pygame.transform.scale(image, (120, 120))
-		rect = image.get_rect()
-		rect.topleft = 0, 0
-		win.blit(image, rect)
+		pad = {"left_side":((41,63),(1,1)),
+			"middle_side":((42,63),(1,1)),
+			"right_side":((45,63),(1,1))}
+		images = []
+		for key, value in pad.items():
+			img = element_ss.get_image(value[0],value[1])
+			images.append(pygame.transform.scale(img, (120, 120)))
+
+
+		#image = element_ss.get_image((61,24),(2,2))
+		#image = pygame.transform.scale(image, (120, 120))
+		#rect = image.get_rect()
+		#rect.topleft = 0, 0
+		win.blit(images[0], (0,0))
+		win.blit(images[1], (120,0))
+		win.blit(images[2], (240,0))
 
 		#update screen
 		pygame.display.update()
